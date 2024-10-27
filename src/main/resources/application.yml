@@ -1,0 +1,65 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1  # Ruta inicial de la API
+  tomcat:
+    uri-encoding: UTF-8  # Configuración de Tomcat para UTF-8
+
+spring:
+  profiles:
+    active: mysql  # Perfil activo por defecto para MySQL
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: America/Mazatlan # Zona horaria configurada para América/Mazatlán
+    locale: es_MX
+  datasource:
+    hikari:
+      minimumIdle: 4
+      maximum-pool-size: 10  # Tamaño máximo del pool de conexiones de HikariCP
+      idleTimeout: 15000
+      pool-name:
+      maxLifetime: 1800000
+      connectionTimeout: 30000
+  sql:
+    init:
+      encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: none  # Actualiza la base de datos en cada inicio para MySQL (ajusta según sea necesario)
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+# Perfil MySQL
+---
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/sys?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
+    username:   # Nombre de usuario para MySQL
+    password:   # Contraseña de MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Perfil H2
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  h2:
+    console:
+      enabled: true  # Habilita la consola de H2
+      path: /h2-console  # Ruta de la consola de H2
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test  # Configuración de BD de H2
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format-sql: true
+        ddl-auto: create  # Reemplaza según tus necesidades para pruebas
