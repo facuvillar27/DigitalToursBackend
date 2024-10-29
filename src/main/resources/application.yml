@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /api/v1  # Ruta inicial de la API
+    context-path: /digitaltours/api  # Ruta inicial de la API
   tomcat:
     uri-encoding: UTF-8  # Configuración de Tomcat para UTF-8
 
@@ -38,8 +38,8 @@ spring:
       on-profile: mysql
   datasource:
     url: jdbc:mysql://localhost:3306/sys?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
-    username:   # Nombre de usuario para MySQL
-    password:   # Contraseña de MySQL
+    username: root  # Nombre de usuario para MySQL
+    password: root  # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Perfil H2
