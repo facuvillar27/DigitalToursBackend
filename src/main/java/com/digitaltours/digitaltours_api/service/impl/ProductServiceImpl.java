@@ -10,7 +10,6 @@ import com.digitaltours.digitaltours_api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +20,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO saveProduct(ProductDTO newProduct) {
-        final Integer idProduct = queryIdProduct();
-        newProduct.setId(idProduct.longValue());
+        //final Integer idProduct = queryIdProduct();
+       // newProduct.setId(idProduct.longValue());
         final ProductEntity product = ProductMapper.mapProductDTO(newProduct);
 
         return ProductMapper.mapProduct(productRepository.save(product));
