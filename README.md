@@ -32,7 +32,7 @@ La arquitectura estándar de Spring Boot utilizada en este proyecto incluye las 
 ### Documentación
 
 Se utiliza **Swagger** para generar documentación interactiva de la API, facilitando la visualización de los endpoints disponibles.
-La ruta local es <http://localhost:8080/api/v1/swagger-ui/index.html>.
+La ruta local es <http://localhost:8080/digitaltours/api/swagger-ui/index.html>.
 
 ### Seguridad
 

@@ -19,7 +19,6 @@ import java.util.UUID;
 @Validated
 @CrossOrigin
 @RestController
-@RequestMapping("images")
 public class ImageController {
 
     @Autowired
@@ -28,7 +27,7 @@ public class ImageController {
     private final Meta meta = new Meta(UUID.randomUUID().toString(), "OK", 200);
 
     @Operation(summary = "Subir una imagen", description = "Este endpoint permite subir una imagen.")
-    @PostMapping(path ="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path ="/v1/images/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponseDTO uploadImage( @RequestParam("file") MultipartFile file) {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, imageService.uploadImage(file));
@@ -38,7 +37,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/v1/images")
     public ApiResponseDTO getAllImages() {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, imageService.getAllImages());
