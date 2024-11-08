@@ -59,18 +59,23 @@ public class AuthController {
             return new ApiResponseDTO(
                     new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
         }
-
-        // userService.registerUser(request);
-        // return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/v1/auth/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequestDTO authRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+    public ApiResponseDTO login(@RequestBody AuthRequestDTO authRequest) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-        String jwtToken = jwtService.generateToken(userDetails);
-        return ResponseEntity.ok(Map.of("token", jwtToken));
+            UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+
+            ApiResponseDTO response = new ApiResponseDTO(meta, jwtService.generateToken(userDetails));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), "Incorrect username or password");
+        }
+
     }
 }

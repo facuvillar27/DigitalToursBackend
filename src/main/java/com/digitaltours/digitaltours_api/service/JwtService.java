@@ -3,12 +3,15 @@ package com.digitaltours.digitaltours_api.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -18,6 +21,14 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+
+        // Obtener los roles del usuario y añadirlos en los claims
+        String roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        claims.put("roles", roles); // Agregar roles a los claims
+
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -33,6 +44,10 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
+    }
+
+    public String extractRoles(String token) {
+        return extractAllClaims(token).get("roles", String.class);
     }
 
     private Claims extractAllClaims(String token) {

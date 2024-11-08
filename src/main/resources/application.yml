@@ -40,9 +40,9 @@ spring:
     activate:
       on-profile: mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/sys?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
+    url: jdbc:mysql://junction.proxy.rlwy.net:56267/railway?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
     username: root # Nombre de usuario para MySQL
-    password: root # Contraseña de MySQL
+    password:  # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Perfil H2
