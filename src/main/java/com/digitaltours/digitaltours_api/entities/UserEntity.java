@@ -51,7 +51,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users", schema = "sys")
+@Table(name = "users", schema = "railway")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -69,14 +69,7 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            schema = "sys",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    @Transient
-    private Set<RoleEntity> roles = new HashSet<>();
+    @Column
+    private String role;
 
 }

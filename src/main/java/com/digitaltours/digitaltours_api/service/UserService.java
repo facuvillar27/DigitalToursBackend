@@ -24,11 +24,12 @@ public class UserService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
+        user.setRole("ROLE_USER");
 
-        RoleEntity defaultRole = new RoleEntity();
-        defaultRole.setName("ROLE_USER"); // Asigna el rol por defecto
+        //RoleEntity defaultRole = new RoleEntity();
+        //defaultRole.setName("ROLE_USER"); // Asigna el rol por defecto
 
-        user.getRoles().add(defaultRole); // Agrega el rol al usuario
+       // user.getRoles().add(defaultRole); // Agrega el rol al usuario
 
         userRepository.save(user);
 
