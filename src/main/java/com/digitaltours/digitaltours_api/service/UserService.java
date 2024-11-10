@@ -4,7 +4,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.digitaltours.digitaltours_api.dto.UserRegistrationRequestDTO;
-import com.digitaltours.digitaltours_api.entities.RoleEntity;
 import com.digitaltours.digitaltours_api.entities.UserEntity;
 import com.digitaltours.digitaltours_api.repository.UserRepository;
 
@@ -24,6 +23,7 @@ public class UserService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
+        user.setName(request.getName());
         user.setRole("ROLE_USER");
 
         //RoleEntity defaultRole = new RoleEntity();
