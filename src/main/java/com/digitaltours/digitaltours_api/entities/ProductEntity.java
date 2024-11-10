@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +33,9 @@ public class ProductEntity implements Serializable {
     @Column(name = "descripcion")
     private String description;
 
-    @Column(name = "categoria")
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private CategoryEntity category;
 
     @Column(name = "precio")
     private Float price;

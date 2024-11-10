@@ -1,5 +1,19 @@
 package com.digitaltours.digitaltours_api.controller;
 
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
 import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.service.ProductService;
@@ -8,13 +22,6 @@ import com.digitaltours.digitaltours_api.utils.ProductMessages;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @SuppressWarnings("rawtypes")
 @Validated
@@ -58,6 +65,17 @@ public class ProductController {
             return response;
         } catch (Exception e) {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+        }
+    }
+
+    // Actualizar un producto existente
+    @PutMapping("/v1/products/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
+        if (updatedProduct != null) {
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
