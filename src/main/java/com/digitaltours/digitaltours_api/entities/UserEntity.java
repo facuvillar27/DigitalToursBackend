@@ -1,5 +1,6 @@
 package com.digitaltours.digitaltours_api.entities;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,9 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserEntity {
+
     @Id
+    @Basic(optional = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "nombre")
     private String name;
