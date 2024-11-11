@@ -1,0 +1,45 @@
+package com.digitaltours.digitaltours_api.controller;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
+import com.digitaltours.digitaltours_api.entities.UserEntity;
+import com.digitaltours.digitaltours_api.service.UserService;
+import com.digitaltours.digitaltours_api.utils.Meta;
+
+import io.swagger.v3.oas.annotations.Operation;
+
+
+@SuppressWarnings("rawtypes")
+@Validated
+@CrossOrigin
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    private final Meta meta = new Meta(UUID.randomUUID().toString(), "OK", 200);
+
+
+    @Operation(summary = "Mostrar todos los productos usuarios", description = "Este endpoint permite mostrar todos los usuarios.")
+    @GetMapping("/v1/users")
+    public ApiResponseDTO getAllUsers() {
+        try {
+            List<UserEntity> users = userService.getAllUsers();
+            ApiResponseDTO response = new ApiResponseDTO(meta, users);
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.INTERNAL_SERVER_ERROR.value()), e);
+        }
+    }
+}

@@ -1,35 +1,3 @@
-// package com.digitaltours.digitaltours_api.entities;
-
-// import jakarta.persistence.Column;
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
-// import jakarta.persistence.Table;
-// import lombok.AllArgsConstructor;
-// import lombok.Data;
-// import lombok.NoArgsConstructor;
-
-// @Entity
-// @Table(name = "users")
-// @AllArgsConstructor
-// @NoArgsConstructor
-// @Data
-// public class UserEntity {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     @Column(unique = true, nullable = false)
-//     private String username;
-
-//     @Column(nullable = false)
-//     private String password;
-
-//     @Column(nullable = false)
-//     private String role; // Puede ser "ROLE_USER" o "ROLE_ADMIN"
-// }
-
 package com.digitaltours.digitaltours_api.entities;
 
 import jakarta.persistence.Column;
@@ -55,6 +23,9 @@ public class UserEntity {
     @Column(name = "nombre")
     private String name;
 
+    @Column(name = "apellido")
+    private String apellido;
+
     @Column(unique = true, nullable = false)
     private String username;
 
@@ -64,7 +35,6 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String role;
-
 }
