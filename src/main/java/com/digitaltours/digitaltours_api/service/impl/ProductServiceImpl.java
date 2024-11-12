@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.entities.ProductEntity;
-import com.digitaltours.digitaltours_api.exceptions.ResourceNotFoundException;
 import com.digitaltours.digitaltours_api.mappers.ProductMapper;
 import com.digitaltours.digitaltours_api.repository.CategoryRepository;
 import com.digitaltours.digitaltours_api.repository.ProductRepository;
@@ -37,12 +38,20 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findMaxIdProduct();
     }
 
+
     @Override
-    public ProductDTO getProduct(Long id) {
-        return productRepository.findById(id)
-                .map(ProductMapper::mapProduct)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+    public ProductDTO getProduct(final Long id) {
+        final Optional<ProductEntity> existProduct = productRepository.findById(id);
+        ProductDTO productDTO = null;
+
+        if (existProduct.isPresent()) {
+            productDTO = ProductMapper.mapProduct(existProduct.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto No Encontrado");
+        }
+        return productDTO;
     }
+
 
     @Override
     public List<ProductDTO> getAllProducts() {
@@ -79,6 +88,21 @@ public class ProductServiceImpl implements ProductService {
         }
         throw new RuntimeException("Producto no encontrado para actualizar");
     }
+    
+    @Override
+    public ProductDTO deleteProduct(final Long product) {
+        ProductDTO productEliminado = null;
+        final Optional<ProductEntity> existeProduct = productRepository.findById(product);
+
+        if (existeProduct.isPresent()) {
+            productEliminado = ProductMapper.mapProduct(existeProduct.get());
+            this.productRepository.delete(existeProduct.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto No Encontrado");
+        }
+        return productEliminado;
+    }
+    
 
     /* Otra forma de iterar sobre los registros que regresa la BD.
     @Override

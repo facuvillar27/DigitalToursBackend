@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +33,6 @@ public class ProductController {
     private ProductService productService;
 
     private final Meta meta = new Meta(UUID.randomUUID().toString(), "OK", 200);
-    //private final ProductMessages productMessages = new ProductMessages();
 
     @Operation(summary = "Mostrar todos los productos existentes", description = "Este endpoint permite mostrar todos los productos.")
     @GetMapping("/v1/products")
@@ -46,8 +45,8 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "Mostrar un producto usando su id", description = "Este endpoint permite mostrar un producto usando su id.")
-    @GetMapping("/v1/products/{id:[\\d]+}")
+    @Operation(summary = "Mostrar una producto usando su id", description = "Este endpoint permite mostrar una producto usando su id.")
+    @GetMapping(value = "/v1/products/{id:\\d{1,19}}")
     public ApiResponseDTO getProduct(@PathVariable Long id) {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, productService.getProduct(id));
@@ -56,6 +55,7 @@ public class ProductController {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), ProductMessages.PRODUCT_NOT_FOUND);
         }
     }
+
 
     @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
     @PostMapping(path ="/v1/products")
@@ -68,15 +68,29 @@ public class ProductController {
         }
     }
 
-    // Actualizar un producto existente
-    @PutMapping("/v1/products/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
-        if (updatedProduct != null) {
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
+    @PutMapping("/v1/products/update/{id}")
+    public ApiResponseDTO updateProduct( @PathVariable Long id, @RequestBody @Valid ProductDTO productDTO) {
+        try {
+            ApiResponseDTO response = new ApiResponseDTO(meta, productService.updateProduct(id, productDTO));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
         }
     }
+
+
+    @Operation(summary = "Eliminar un producto usando su id", description = "Este endpoint permite eliminar un producto usando su id.")
+    @DeleteMapping("/v1/products/delete/{id:[\\d]+}")
+    public ApiResponseDTO deleteProduct(@PathVariable Long id) {
+        try {
+            ApiResponseDTO response = new ApiResponseDTO(meta, productService.deleteProduct(id));
+            return response;
+        }catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.INTERNAL_SERVER_ERROR.value()), e);
+        }
+    }
+    
 
 }
