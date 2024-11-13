@@ -68,21 +68,8 @@ public class ProductController {
         }
     }
 
-
-    @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
-    @PutMapping("/v1/products/update/{id}")
-    public ApiResponseDTO updateProduct( @PathVariable Long id, @RequestBody @Valid ProductDTO productDTO) {
-        try {
-            ApiResponseDTO response = new ApiResponseDTO(meta, productService.updateProduct(id, productDTO));
-            return response;
-        } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
-        }
-    }
-
-
     @Operation(summary = "Eliminar un producto usando su id", description = "Este endpoint permite eliminar un producto usando su id.")
-    @DeleteMapping("/v1/products/delete/{id:[\\d]+}")
+    @DeleteMapping("/v1/products/{id:[\\d]+}")
     public ApiResponseDTO deleteProduct(@PathVariable Long id) {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, productService.deleteProduct(id));
@@ -91,6 +78,16 @@ public class ProductController {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.INTERNAL_SERVER_ERROR.value()), e);
         }
     }
-    
+
+    @Operation(summary = "Actualizar un producto", description = "Este endpoint le permite a un administrador Actualizar un producto.")
+    @PutMapping("/v1/products/{id:[\\d]+}")
+    public ApiResponseDTO updateProduct( @PathVariable Long id, @RequestBody @Valid ProductDTO productDTO) {
+        try {
+            ApiResponseDTO response = new ApiResponseDTO(meta, productService.updateProduct(id, productDTO));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+        }
+    }
 
 }

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.digitaltours.digitaltours_api.dto.UserRegistrationRequestDTO;
-import com.digitaltours.digitaltours_api.dto.UserRoleUpdateDTO;
+import com.digitaltours.digitaltours_api.dto.UserUpdateDTO;
 import com.digitaltours.digitaltours_api.entities.UserEntity;
-import com.digitaltours.digitaltours_api.exceptions.ResourceNotFoundException;
 import com.digitaltours.digitaltours_api.mappers.UserMapper;
 import com.digitaltours.digitaltours_api.repository.UserRepository;
 import com.digitaltours.digitaltours_api.service.UserService;
@@ -45,43 +46,54 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRoleUpdateDTO getUserById(Long id) {
-        return userRepository.findById(id)
-                .map(UserMapper::mapUser)
-                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
+    public UserUpdateDTO getUser(final Long id) {
+        final Optional<UserEntity> existUser = userRepository.findById(id);
+        UserUpdateDTO userUpdateDTO = null;
+
+        if (existUser.isPresent()) {
+            userUpdateDTO = UserMapper.mapUser(existUser.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto No Encontrado");
+        }
+        return userUpdateDTO;
     }
 
     @Override
-    public String getRoleById(Long id) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get().getRole(); // Devuelve el rol del usuario
+    public UserUpdateDTO deleteUser(final Long user) {
+        UserUpdateDTO userEliminado = null;
+        final Optional<UserEntity> existeUser = userRepository.findById(user);
+
+        if (existeUser.isPresent()) {
+            userEliminado = UserMapper.mapUser(existeUser.get());
+            this.userRepository.delete(existeUser.get());
         } else {
-            throw new RuntimeException("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User No Encontrado");
         }
+        return userEliminado;
     }
 
-    // @Override
-    // public UserRoleUpdateDTO updateUser(Long id, UserRoleUpdateDTO userRoleUpdateDTO) {
-    //     Optional<UserEntity> existingUser = userRepository.findById(id);
-    //     if (existingUser.isPresent()) {
-    //         UserEntity userEntity = existingUser.get();
-    
-    //         // Actualiza los campos del usuario
-    //         userEntity.setName(userRoleUpdateDTO.getName());
-    //         userEntity.setUsername(userRoleUpdateDTO.getUsername());
-    //         userEntity.setApellido(userRoleUpdateDTO.getApellido());
-    //         userEntity.setRole(userRoleUpdateDTO.getRole());
-    //         userEntity.setPassword(userRoleUpdateDTO.getPassword());
-    //         userEntity.setEmail(userRoleUpdateDTO.getEmail());
-    
-    //         // Guarda el usuario actualizado
-    //         userEntity = userRepository.save(userEntity);
-    //         return UserMapper.mapUser(userEntity);
-    
-    //     }
-    //     throw new RuntimeException("Usuario no encontrado para actualizar");
-    // }
-    
+    @Override
+    public UserUpdateDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+        Optional<UserEntity> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            UserEntity userEntity = existingUser.get();
+
+            // Actualiza los campos del producto
+            userEntity.setName(userUpdateDTO.getName());
+            userEntity.setApellido(userUpdateDTO.getApellido());
+            userEntity.setUsername(userUpdateDTO.getUsername());
+            userEntity.setPassword(userUpdateDTO.getPassword());
+            userEntity.setEmail(userUpdateDTO.getEmail());
+            userEntity.setRole(userUpdateDTO.getRole());
+
+            if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+                userEntity.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));}
+
+            // Guarda el producto actualizado
+            userEntity = userRepository.save(userEntity);
+            return UserMapper.mapUser(userEntity);
+        }
+        throw new RuntimeException("User no encontrado para actualizar");
+    }
 
 }

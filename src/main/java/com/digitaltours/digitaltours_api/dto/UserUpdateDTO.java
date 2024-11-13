@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRoleUpdateDTO {
+public class UserUpdateDTO {
     
-    private Long id;
-    private String username;
     private String name;
     private String apellido;
+    private String username;
     private String password;
     private String email;
     private String role;
+
 }
