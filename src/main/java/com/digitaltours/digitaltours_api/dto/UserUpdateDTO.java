@@ -4,15 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
-
-    private Long id;
+public class UserUpdateDTO {
+    
     private String name;
-    private String description;
-    private CategoryDTO category; 
-    private Float price;
-    private String image;
+    private String apellido;
+    private String username;
+    private String password;
+    private String email;
+    private String role;
+
 }

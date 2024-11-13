@@ -1,44 +1,39 @@
 package com.digitaltours.digitaltours_api.entities;
 
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users", schema = "railway")
+@Table(name = "categoria")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserEntity {
+public class CategoryEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_categoria")
     private Long id;
 
     @Column(name = "nombre")
     private String name;
 
-    @Column(name = "apellido")
-    private String apellido;
-
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @Column(unique = true, nullable = false)
-    private String role;
+    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    private List<ProductEntity> products;
 }

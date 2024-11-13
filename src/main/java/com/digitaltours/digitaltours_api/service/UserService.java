@@ -1,38 +1,15 @@
 package com.digitaltours.digitaltours_api.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.digitaltours.digitaltours_api.dto.UserRegistrationRequestDTO;
-import com.digitaltours.digitaltours_api.entities.RoleEntity;
+import com.digitaltours.digitaltours_api.dto.UserUpdateDTO;
 import com.digitaltours.digitaltours_api.entities.UserEntity;
-import com.digitaltours.digitaltours_api.repository.UserRepository;
 
-@Service
-public class UserService {
-
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public String registerUser(UserRegistrationRequestDTO request) {
-        UserEntity user = new UserEntity();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEmail(request.getEmail());
-        user.setRole("ROLE_USER");
-
-        //RoleEntity defaultRole = new RoleEntity();
-        //defaultRole.setName("ROLE_USER"); // Asigna el rol por defecto
-
-       // user.getRoles().add(defaultRole); // Agrega el rol al usuario
-
-        userRepository.save(user);
-
-        return "User registered successfully";
-    }
+public interface UserService {
+    String registerUser(UserRegistrationRequestDTO request);
+    List<UserEntity> getAllUsers();
+    UserUpdateDTO getUser(Long id);
+    UserUpdateDTO deleteUser(Long id);
+    UserUpdateDTO updateUser(Long id, UserUpdateDTO userUpdateDTO);
 }

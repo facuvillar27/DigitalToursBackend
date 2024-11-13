@@ -11,15 +11,13 @@ import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
 import com.digitaltours.digitaltours_api.dto.AuthRequestDTO;
 import com.digitaltours.digitaltours_api.dto.UserRegistrationRequestDTO;
 import com.digitaltours.digitaltours_api.service.JwtService;
-import com.digitaltours.digitaltours_api.service.ProductService;
 import com.digitaltours.digitaltours_api.service.UserService;
 import com.digitaltours.digitaltours_api.utils.Meta;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
+
 import java.util.UUID;
 
 @Validated
