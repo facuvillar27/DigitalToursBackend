@@ -1,33 +1,21 @@
 package com.digitaltours.digitaltours_api.entities;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "images")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "imagenes")
 @Data
-public class ImageEntity implements Serializable {
+public class ImageEntity {
+
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "image_id")
+    private Long idImagen;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "product_id", nullable = false)
+    private Long idProducto;
 
-    @Column(name = "imageurl")
-    private String imageUrl;
+    @Column(name = "image_url", nullable = false, length = 200)
+    private String urlImagen;
 }
