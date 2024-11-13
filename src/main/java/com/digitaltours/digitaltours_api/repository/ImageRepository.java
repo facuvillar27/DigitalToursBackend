@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
-    // Puedes agregar métodos personalizados aquí si es necesario
 }

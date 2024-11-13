@@ -41,8 +41,8 @@ spring:
       on-profile: mysql
   datasource:
     url: jdbc:mysql://junction.proxy.rlwy.net:56267/railway?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
-    username: ${DB_USERNAME} # Nombre de usuario para MySQL
-    password: ${DB_PASSWORD} # Contraseña de MySQL
+    username: root # Nombre de usuario para MySQL
+    password: QkQTFJrvuYtyekyGEAivcEydgGKLewHf # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Perfil H2
