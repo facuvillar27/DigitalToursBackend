@@ -41,8 +41,8 @@ spring:
       on-profile: mysql
   datasource:
     url: jdbc:mysql://junction.proxy.rlwy.net:56267/railway?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
-    username: ${DB_USERNAME} # Nombre de usuario para MySQL
-    password: ${DB_PASSWORD} # Contraseña de MySQL
+    username: ${DB_USERNAME:defaultUsername} # Nombre de usuario para MySQL
+    password: ${DB_PASSWORD:defaultPassword} # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Perfil H2
@@ -66,6 +66,17 @@ spring:
       hibernate:
         format-sql: true
         ddl-auto: create  # Reemplaza según tus necesidades para pruebas
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: DigitalTours2024@gmail.com
+    password: bgcl gowy ivhs rjqn # Cambiar la contraseña por una no hardcodeada esta contraseña es de contraseña de aplicaciones de gmail
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 logging:
   level:

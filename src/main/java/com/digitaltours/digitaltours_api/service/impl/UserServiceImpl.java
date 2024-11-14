@@ -15,6 +15,11 @@ import com.digitaltours.digitaltours_api.entities.UserEntity;
 import com.digitaltours.digitaltours_api.mappers.UserMapper;
 import com.digitaltours.digitaltours_api.repository.UserRepository;
 import com.digitaltours.digitaltours_api.service.UserService;
+import com.digitaltours.digitaltours_api.service.EmailService;
+
+import jakarta.mail.MessagingException;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public String registerUser(UserRegistrationRequestDTO request) {
@@ -36,6 +44,13 @@ public class UserServiceImpl implements UserService {
         user.setRole("ROLE_USER"); 
 
         userRepository.save(user);
+
+        // Enviar correo de confirmación
+        try {
+            emailService.sendConfirmationEmail(request.getEmail(), request.getUsername());
+        } catch (MessagingException |UnsupportedEncodingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al enviar el correo de confirmación");
+        }
 
         return "User registered successfully";
     }
@@ -94,6 +109,20 @@ public class UserServiceImpl implements UserService {
             return UserMapper.mapUser(userEntity);
         }
         throw new RuntimeException("User no encontrado para actualizar");
+    }
+
+    @Override
+    public void resendSignupEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
+        }
+
+        try {
+            emailService.sendConfirmationEmail(email, user.getUsername());
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al enviar el correo de confirmación");
+        }
     }
 
 }

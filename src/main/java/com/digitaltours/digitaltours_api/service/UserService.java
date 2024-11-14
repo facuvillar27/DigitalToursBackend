@@ -12,4 +12,5 @@ public interface UserService {
     UserUpdateDTO getUser(Long id);
     UserUpdateDTO deleteUser(Long id);
     UserUpdateDTO updateUser(Long id, UserUpdateDTO userUpdateDTO);
+    void resendSignupEmail(String email);
 }
