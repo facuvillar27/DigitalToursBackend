@@ -83,4 +83,15 @@ public class AuthController {
                     new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), "Incorrect username or password");
         }
     }
+
+    @PostMapping("/v1/auth/resend-signup-email")
+    public ApiResponseDTO resendSignupEmail(@RequestParam String email) {
+        try {
+            userService.resendSignupEmail(email);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "OK", HttpStatus.OK.value()), "Correo de confirmación reenviado exitosamente");
+        } catch (Exception e) {
+            return new ApiResponseDTO(
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+        }
+    }
 }
