@@ -1,6 +1,7 @@
 package com.digitaltours.digitaltours_api.controller;
 
 import com.digitaltours.digitaltours_api.service.CustomUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @Validated
 @CrossOrigin
 @RestController
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -38,6 +40,8 @@ public class AuthController {
     private final UserService userService;
 
     private final Meta meta = new Meta(UUID.randomUUID().toString(), "OK", 200);
+
+    private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
 
     public AuthController(AuthenticationManager authenticationManager, JwtService jwtService,
                           CustomUserDetailsService customUserDetailsService, UserService userService) {  // Cambié esto también
@@ -63,26 +67,41 @@ public class AuthController {
     @PostMapping("/v1/auth/login")
     public ApiResponseDTO login(@RequestBody AuthRequestDTO authRequest) {
         try {
+            // Log inicial con los datos recibidos
+            logger.info("Intentando autenticar al usuario: {}", authRequest.getUsername());
+
             // Autenticar al usuario
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            logger.info("Autenticación exitosa para el usuario: {}", authRequest.getUsername());
 
-            // Obtener el CustomUserDetails, no el UserEntity directamente
+            // Obtener el CustomUserDetails
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(authRequest.getUsername());
+            logger.info("UserDetails cargado para el usuario: {}", authRequest.getUsername());
 
             // Acceder al UserEntity desde CustomUserDetails
             com.digitaltours.digitaltours_api.entities.UserEntity userEntity = ((CustomUserDetails) userDetails).getUserEntity();
+            logger.info("UserEntity obtenido: Username={}, Role={}", userEntity.getUsername(), userEntity.getRole());
 
-            // Generar el token JWT que incluye el id y los roles
-            String token = jwtService.generateToken(userEntity);  // Ahora se pasa un UserEntity, no un UserDetails
+            // Generar el token JWT
+            String token = jwtService.generateToken(userEntity);
+            logger.info("Token generado para el usuario: {}. Token={}", userEntity.getUsername(), token);
 
-            ApiResponseDTO response = new ApiResponseDTO(meta, token);  // Se retorna el token con el id incluido
+            // Crear y retornar la respuesta
+            ApiResponseDTO response = new ApiResponseDTO(meta, token);
+            logger.info("Respuesta creada con éxito para el usuario: {}", userEntity.getUsername());
             return response;
+
         } catch (Exception e) {
+            // Registrar el error con su stack trace
+            logger.error("Error durante el inicio de sesión para el usuario: {}. Mensaje: {}",
+                    authRequest.getUsername(), e.getMessage(), e);
             return new ApiResponseDTO(
-                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), "Incorrect username or password");
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()),
+                    "Incorrect username or password");
         }
     }
+
 
     @PostMapping("/v1/auth/resend-signup-email")
     public ApiResponseDTO resendSignupEmail(@RequestParam String email) {
