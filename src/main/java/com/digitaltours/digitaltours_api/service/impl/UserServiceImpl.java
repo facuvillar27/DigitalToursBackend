@@ -3,6 +3,7 @@ package com.digitaltours.digitaltours_api.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import com.digitaltours.digitaltours_api.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public String registerUser(UserRegistrationRequestDTO request) {
@@ -97,15 +101,18 @@ public class UserServiceImpl implements UserService {
             userEntity.setName(userUpdateDTO.getName());
             userEntity.setApellido(userUpdateDTO.getApellido());
             userEntity.setUsername(userUpdateDTO.getUsername());
-            userEntity.setPassword(userUpdateDTO.getPassword());
             userEntity.setEmail(userUpdateDTO.getEmail());
             userEntity.setRole(userUpdateDTO.getRole());
 
-            if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
-                userEntity.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));}
+            /*if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+                userEntity.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
+            } else {
+                userEntity.setPassword(existingUser.get().getPassword());
+            }*/
 
             // Guarda el producto actualizado
             userEntity = userRepository.save(userEntity);
+            String token =jwtService.generateToken(userEntity);
             return UserMapper.mapUser(userEntity);
         }
         throw new RuntimeException("User no encontrado para actualizar");
