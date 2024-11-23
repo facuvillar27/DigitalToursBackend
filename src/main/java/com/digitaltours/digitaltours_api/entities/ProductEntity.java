@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "producto")
+@Table(name = "tours")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -24,7 +24,7 @@ public class ProductEntity implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
+    @Column(name = "id_tour")
     private Long id;
 
     @Column(name = "nombre")
@@ -33,13 +33,23 @@ public class ProductEntity implements Serializable {
     @Column(name = "descripcion")
     private String description;
 
+    @Column(name = "precio")
+    private Float price;
+
+    @Column(name = "duracion")
+    private String duration;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ciudad", nullable = false)
+    private CityEntity  city;
+
+    @Column(name = "id_pais")
+    private String  id_country;
+
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoryEntity category;
 
-    @Column(name = "precio")
-    private Float price;
-
-    @Column(name = "imagen")
-    private String image;
+    // @Column(name = "imagen")
+    // private String image;
 }
