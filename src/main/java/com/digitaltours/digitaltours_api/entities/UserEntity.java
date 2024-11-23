@@ -40,5 +40,5 @@ public class UserEntity {
     private String email;
 
     @Column(name = "rol", unique = true, nullable = false)
-    private String role;
+    private Integer role;
 }

@@ -1,9 +1,9 @@
 package com.digitaltours.digitaltours_api.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
-import com.digitaltours.digitaltours_api.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +15,11 @@ import com.digitaltours.digitaltours_api.dto.UserUpdateDTO;
 import com.digitaltours.digitaltours_api.entities.UserEntity;
 import com.digitaltours.digitaltours_api.mappers.UserMapper;
 import com.digitaltours.digitaltours_api.repository.UserRepository;
-import com.digitaltours.digitaltours_api.service.UserService;
 import com.digitaltours.digitaltours_api.service.EmailService;
+import com.digitaltours.digitaltours_api.service.JwtService;
+import com.digitaltours.digitaltours_api.service.UserService;
 
 import jakarta.mail.MessagingException;
-
-import java.io.UnsupportedEncodingException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setApellido(request.getApellido());
-        user.setRole("ROLE_USER"); 
+        user.setRole(1); 
 
         userRepository.save(user);
 
