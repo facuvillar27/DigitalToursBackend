@@ -36,13 +36,10 @@ spring:
 # Perfil MySQL
 ---
 spring:
-  config:
-    activate:
-      on-profile: mysql
   datasource:
-    url: jdbc:mysql://junction.proxy.rlwy.net:56267/railway?useSSL=false&serverTimezone=UTC  # Cambia 'tu_base_datos' al nombre de tu base de datos
-    username: ${DB_USERNAME:defaultUsername} # Nombre de usuario para MySQL
-    password: ${DB_PASSWORD:defaultPassword} # Contraseña de MySQL
+    url: jdbc:mysql:// digital-tours.clu8ko4silyt.us-east-2.rds.amazonaws.com:3306/digital_toursV2  # Cambia 'tu_base_datos' al nombre de tu base de datos
+    username: DgAdmin  # Nombre de usuario
+    password:  # Contraseña
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Perfil H2
