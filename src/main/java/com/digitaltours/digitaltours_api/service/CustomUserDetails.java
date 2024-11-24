@@ -1,12 +1,13 @@
 package com.digitaltours.digitaltours_api.service;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.digitaltours.digitaltours_api.entities.UserEntity;
 
-import java.util.Collection;
-import java.util.Collections;
+import com.digitaltours.digitaltours_api.entities.UserEntity;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -19,7 +20,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Asumimos que el rol es algo como "ROLE_USER", "ROLE_ADMIN", etc.
-        return Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
+        // return Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
+        return Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole().toString()));
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.digitaltours.digitaltours_api.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.digitaltours.digitaltours_api.dto.CityDTO;
 import com.digitaltours.digitaltours_api.exceptions.ResourceNotFoundException;
@@ -8,6 +9,7 @@ import com.digitaltours.digitaltours_api.mappers.CityMapper;
 import com.digitaltours.digitaltours_api.repository.CityRepository;
 import com.digitaltours.digitaltours_api.service.CityService;
 
+@Service
 public class CityServiceImpl implements CityService{
 
     @Autowired

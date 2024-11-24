@@ -1,6 +1,9 @@
 package com.digitaltours.digitaltours_api.entities;
 
 import java.io.Serializable;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,6 +53,11 @@ public class ProductEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoryEntity category;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private Set<DatesEntity> dates;
+
 
     // @Column(name = "imagen")
     // private String image;
