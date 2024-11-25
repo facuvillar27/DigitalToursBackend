@@ -80,7 +80,6 @@ public class ProductServiceImpl implements ProductService {
             productEntity.setDescription(productDTO.getDescription());
             productEntity.setPrice(productDTO.getPrice());
             productEntity.setDuration(productDTO.getDuration());
-            productEntity.setId_country(productDTO.getId_country());
             cityRepository.findById(productDTO.getCity().getId());
 
             // productEntity.setImage(productDTO.getImage());

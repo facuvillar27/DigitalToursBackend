@@ -26,16 +26,16 @@ public class DatesEntity implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_fecha")
+    @Column(name = "id_date")
     private Long id;
 
-    @Column(name = "fecha")
+    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "cupo_total")
+    @Column(name = "total_quota")
     private Integer total_space;
 
-    @Column(name = "cupo_disponible")
+    @Column(name = "available_quota")
     private Integer available_space;
 
     @ManyToOne

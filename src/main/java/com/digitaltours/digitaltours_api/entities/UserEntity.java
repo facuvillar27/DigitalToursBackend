@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,15 +22,15 @@ public class UserEntity {
 
     @Id
     @Basic(optional = false)
-    @Column(name = "id_usuario")
+    @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "apellido")
-    private String apellido;
+    @Column(name = "last_name")
+    private String last_name;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -39,6 +41,11 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "rol", unique = true, nullable = false)
-    private Integer role;
+    // @Column(name = "id_role", nullable = false)
+    // private RoleEntity role;
+
+    @ManyToOne
+    @JoinColumn(name = "id_role", nullable = false)
+    private RoleEntity role;
+
 }

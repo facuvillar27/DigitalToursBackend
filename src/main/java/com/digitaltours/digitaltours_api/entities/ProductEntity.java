@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,27 +33,25 @@ public class ProductEntity implements Serializable {
     @Column(name = "id_tour")
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "descripcion")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "precio")
+    @Column(name = "price")
     private Float price;
 
-    @Column(name = "duracion")
-    private String duration;
+    @Column(name = "hours_duration")
+    private Integer duration;
 
-    @ManyToOne
-    @JoinColumn(name = "id_ciudad", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_city", nullable = false)
+    @JsonManagedReference  
     private CityEntity  city;
 
-    @Column(name = "id_pais")
-    private String  id_country;
-
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
+    @JoinColumn(name = "id_category", nullable = false)
     private CategoryEntity category;
 
     @JsonIgnore

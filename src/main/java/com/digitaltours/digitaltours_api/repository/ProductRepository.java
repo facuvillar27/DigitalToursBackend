@@ -12,4 +12,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
      @Query(value = "SELECT COALESCE(MAX(id_producto),0)+1 FROM producto", nativeQuery = true)
     public Integer findMaxIdProduct();
+
 }
