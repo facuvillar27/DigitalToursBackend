@@ -33,7 +33,8 @@ public class CategoryEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    //Image
+    @Column(name = "url_img")
+    private String url;
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
