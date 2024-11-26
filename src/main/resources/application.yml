@@ -46,7 +46,7 @@ spring:
     activate:
       on-profile: mysql
   datasource:
-    url: jdbc:mysql://digital-tours.clu8ko4silyt.us-east-2.rds.amazonaws.com:3306/digital_toursV2?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://digital-tours-db.c9m6c628y4fj.us-east-1.rds.amazonaws.com:3306/digital_toursV2?useSSL=false&serverTimezone=UTC
     username: DgAdmin # Nombre de usuario para MySQL
     password: ${DB_PASSWORD} # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
