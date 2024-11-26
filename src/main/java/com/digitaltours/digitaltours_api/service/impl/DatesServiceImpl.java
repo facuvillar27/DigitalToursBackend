@@ -32,5 +32,12 @@ public class DatesServiceImpl implements DatesService{
                 .map(DatesMapper::mapDates)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DatesDTO> getFilteredDatesAlt(LocalDate date) {
+        return datesRepository.findByDate(date).stream()
+                .map(DatesMapper::mapDates)
+                .collect(Collectors.toList());
+    }
     
 }

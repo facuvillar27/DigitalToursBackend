@@ -15,5 +15,6 @@ public interface DatesRepository extends JpaRepository<DatesEntity, Long>{
 
     List<DatesEntity> findByProductId(Long productId); 
     List<DatesEntity> findByDateBetween(LocalDate startDate, LocalDate endDate);
+    List<DatesEntity> findByDate(LocalDate date);
     
 }

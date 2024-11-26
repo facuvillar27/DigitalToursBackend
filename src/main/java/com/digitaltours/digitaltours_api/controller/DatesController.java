@@ -58,4 +58,19 @@ public class DatesController {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), "Error al filtrar las fechas.");
         }
     }
+
+    @Operation(summary = "Filtrar fechas disponibles", description = "Este endpoint permite filtrar las fechas disponibles de un tour.")
+    @GetMapping("/v1/dates/filtealt")
+    public ApiResponseDTO getFilteredDatesAlt(
+            @RequestParam("date") String date) {
+
+        try {
+            LocalDate datealt = LocalDate.parse(date);
+            
+            ApiResponseDTO response = new ApiResponseDTO(meta, datesService.getFilteredDatesAlt(datealt));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), "Error al filtrar las fechas.");
+        }
+    }
 }
