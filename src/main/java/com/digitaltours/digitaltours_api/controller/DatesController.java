@@ -1,5 +1,6 @@
 package com.digitaltours.digitaltours_api.controller;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
@@ -37,6 +39,23 @@ public class DatesController {
             return response;
         } catch (Exception e) {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), CategoryMessages.CATEGORY_NOT_FOUND);
+        }
+    }
+
+    @Operation(summary = "Filtrar fechas disponibles por rango", description = "Este endpoint permite filtrar las fechas disponibles de un tour usando un rango de fechas.")
+    @GetMapping("/v1/dates/filter")
+    public ApiResponseDTO getFilteredDates(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate) {
+
+        try {
+            LocalDate start = LocalDate.parse(startDate);  // Convertir la fecha de inicio a LocalDate
+            LocalDate end = LocalDate.parse(endDate);      // Convertir la fecha de fin a LocalDate
+            
+            ApiResponseDTO response = new ApiResponseDTO(meta, datesService.getFilteredDates(start, end));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), "Error al filtrar las fechas.");
         }
     }
 }

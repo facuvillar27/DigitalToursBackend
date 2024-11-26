@@ -1,5 +1,6 @@
 package com.digitaltours.digitaltours_api.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,13 @@ public class DatesServiceImpl implements DatesService{
     @Override
     public List<DatesDTO> getDatesByProductId(Long productId) {
         return datesRepository.findByProductId(productId).stream()
+                .map(DatesMapper::mapDates)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DatesDTO> getFilteredDates(LocalDate startDate, LocalDate endDate) {
+        return datesRepository.findByDateBetween(startDate, endDate).stream()
                 .map(DatesMapper::mapDates)
                 .collect(Collectors.toList());
     }
