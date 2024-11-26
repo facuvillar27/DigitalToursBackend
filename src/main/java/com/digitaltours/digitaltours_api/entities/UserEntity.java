@@ -45,4 +45,15 @@ public class UserEntity {
     @JoinColumn(name = "id_role", nullable = false)
     private RoleEntity role;
 
+    @Override
+public String toString() {
+    return "UserEntity{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            // Excluye la colección de roles
+            '}';
 }
+
+
+}
+

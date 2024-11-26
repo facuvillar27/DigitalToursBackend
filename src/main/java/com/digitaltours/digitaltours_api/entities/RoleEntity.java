@@ -36,4 +36,14 @@ public class RoleEntity implements Serializable{
     @OneToMany(mappedBy = "role")
     private List<UserEntity> users;
 
+    @Override
+public String toString() {
+    return "RoleEntity{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            // Excluye la referencia a usuarios
+            '}';
+}
+
+
 }
