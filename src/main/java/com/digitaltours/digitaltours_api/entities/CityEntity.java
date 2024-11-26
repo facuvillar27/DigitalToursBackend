@@ -35,9 +35,6 @@ public class CityEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    // @Column(name = "id_country")
-    // private String  id_country;
     
     @ManyToOne(fetch = FetchType.LAZY)  
     @JoinColumn(name = "id_country", nullable = false)

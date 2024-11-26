@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,7 +39,7 @@ public class DatesEntity implements Serializable {
     @Column(name = "available_quota")
     private Integer available_space;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "id_tour", nullable = false)
     private ProductEntity product;
 }

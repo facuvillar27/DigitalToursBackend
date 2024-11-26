@@ -41,9 +41,6 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    // @Column(name = "id_role", nullable = false)
-    // private RoleEntity role;
-
     @ManyToOne
     @JoinColumn(name = "id_role", nullable = false)
     private RoleEntity role;

@@ -57,8 +57,4 @@ public class ProductEntity implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private Set<DatesEntity> dates;
-
-
-    // @Column(name = "imagen")
-    // private String image;
 }

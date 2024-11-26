@@ -6,7 +6,7 @@ import com.digitaltours.digitaltours_api.dto.DatesDTO;
 import com.digitaltours.digitaltours_api.entities.DatesEntity;
 
 public class DatesMapper {
-
+    
     private DatesMapper() {
         throw new IllegalStateException("No existe un constructor para la clase");
     }

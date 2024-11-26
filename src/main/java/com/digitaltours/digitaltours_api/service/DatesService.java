@@ -6,7 +6,7 @@ import com.digitaltours.digitaltours_api.dto.DatesDTO;
 
 public interface  DatesService {
 
-    List<DatesDTO> getAllDates();
-    DatesDTO getDates(Long id);
+    
+    List<DatesDTO> getDatesByProductId(Long productId); 
     
 }
