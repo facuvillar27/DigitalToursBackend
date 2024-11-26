@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -17,26 +18,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
-@Table(name = "categories")
+@Table(name = "country")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CategoryEntity implements Serializable {
+public class CountryEntity implements Serializable{
 
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category")
+    @Column(name = "id_country")
     private Long id;
 
     @Column(name = "name")
+    @JsonProperty("countryName") 
     private String name;
 
-    @Column(name = "url_img")
-    private String url;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
-    private List<ProductEntity> products;
+    @OneToMany(mappedBy = "country")
+    private List<CityEntity> cities;
 }

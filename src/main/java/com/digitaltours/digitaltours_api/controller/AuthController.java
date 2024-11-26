@@ -81,7 +81,7 @@ public class AuthController {
 
             // Acceder al UserEntity desde CustomUserDetails
             com.digitaltours.digitaltours_api.entities.UserEntity userEntity = ((CustomUserDetails) userDetails).getUserEntity();
-            logger.info("UserEntity obtenido: Username={}, Role={}", userEntity.getUsername(), userEntity.getRole());
+            logger.info("UserEntity obtenido: Username={}, Role={}", userEntity.getUsername(), userEntity.getRole().getName());
 
             // Generar el token JWT
             String token = jwtService.generateToken(userEntity);
@@ -97,8 +97,8 @@ public class AuthController {
             logger.error("Error durante el inicio de sesión para el usuario: {}. Mensaje: {}",
                     authRequest.getUsername(), e.getMessage(), e);
             return new ApiResponseDTO(
-                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()),
-                    "Incorrect username or password");
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()),e
+                    );
         }
     }
 

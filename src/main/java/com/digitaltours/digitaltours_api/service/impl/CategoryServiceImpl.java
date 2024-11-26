@@ -1,9 +1,12 @@
 package com.digitaltours.digitaltours_api.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.digitaltours.digitaltours_api.dto.CategoryDTO;
 import com.digitaltours.digitaltours_api.entities.CategoryEntity;
@@ -42,15 +45,24 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Integer queryIdCategory() {
-        return categoryRepository.findMaxIdCategory();
-    }
-
-    @Override
     public CategoryDTO getCategory(Long id) {
         return categoryRepository.findById(id)
                 .map(CategoryMapper::mapCategory)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrado"));
+    }
+
+    @Override
+    public CategoryDTO deleteCategory(final Long user) {
+        CategoryDTO categoryEliminada = null;
+        final Optional<CategoryEntity> existeCategory = categoryRepository.findById(user);
+
+        if (existeCategory.isPresent()) {
+            categoryEliminada = CategoryMapper.mapCategory(existeCategory.get());
+            this.categoryRepository.delete(existeCategory.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria No Encontrado");
+        }
+        return categoryEliminada;
     }
 
 

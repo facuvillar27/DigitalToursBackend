@@ -9,5 +9,6 @@ public interface CategoryService {
     List<CategoryDTO> getAllCategories();
     CategoryDTO saveCategory(CategoryDTO category);
     CategoryDTO getCategory(Long id);
-    Integer queryIdCategory();
+    CategoryDTO deleteCategory(Long id);
+    // CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO);
 }

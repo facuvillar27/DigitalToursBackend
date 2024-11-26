@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 public class UserUpdateDTO {
     
     private String name;
-    private String apellido;
+    private String last_name;
     private String username;
     private String password;
     private String email;
-    private String role;
+    private RoleDTO role;
 
 }

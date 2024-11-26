@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDTO {
-
+public class CountryDTO {
+    
     private Long id;
     private String name;
-    private String url;
 }

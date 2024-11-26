@@ -12,6 +12,7 @@ import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.entities.ProductEntity;
 import com.digitaltours.digitaltours_api.mappers.ProductMapper;
 import com.digitaltours.digitaltours_api.repository.CategoryRepository;
+import com.digitaltours.digitaltours_api.repository.CityRepository;
 import com.digitaltours.digitaltours_api.repository.ProductRepository;
 import com.digitaltours.digitaltours_api.service.ProductService;
 
@@ -23,6 +24,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Override
     public ProductDTO saveProduct(ProductDTO newProduct) {
@@ -75,7 +79,10 @@ public class ProductServiceImpl implements ProductService {
             productEntity.setName(productDTO.getName());
             productEntity.setDescription(productDTO.getDescription());
             productEntity.setPrice(productDTO.getPrice());
-            productEntity.setImage(productDTO.getImage());
+            productEntity.setDuration(productDTO.getDuration());
+            cityRepository.findById(productDTO.getCity().getId());
+
+            // productEntity.setImage(productDTO.getImage());
 
             if (productDTO.getCategory() != null && productDTO.getCategory().getId() != null) {
                 categoryRepository.findById(productDTO.getCategory().getId())

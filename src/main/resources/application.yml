@@ -42,9 +42,6 @@ spring:
 # Perfil MySQL
 ---
 spring:
-  config:
-    activate:
-      on-profile: mysql
   datasource:
     url: jdbc:mysql://digital-tours-db.c9m6c628y4fj.us-east-1.rds.amazonaws.com:3306/digital_toursV2?useSSL=false&serverTimezone=UTC
     username: DgAdmin # Nombre de usuario para MySQL

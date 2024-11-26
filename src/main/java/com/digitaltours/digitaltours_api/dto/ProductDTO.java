@@ -14,5 +14,7 @@ public class ProductDTO {
     private String description;
     private CategoryDTO category; 
     private Float price;
-    private String image;
+    private Integer duration;
+    private CityDTO  city;
+    // private String image;
 }

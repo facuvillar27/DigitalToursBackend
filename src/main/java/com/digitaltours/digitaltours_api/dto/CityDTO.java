@@ -1,5 +1,7 @@
 package com.digitaltours.digitaltours_api.dto;
 
+import com.digitaltours.digitaltours_api.entities.CountryEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDTO {
+public class CityDTO {
 
     private Long id;
     private String name;
-    private String url;
+    private CountryEntity country;
 }
