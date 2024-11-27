@@ -1,5 +1,7 @@
 package com.digitaltours.digitaltours_api.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,6 @@ public class ProductDTO {
     private Float price;
     private Integer duration;
     private CityDTO  city;
+    private List<String> imageUrls;
     // private String image;
 }
