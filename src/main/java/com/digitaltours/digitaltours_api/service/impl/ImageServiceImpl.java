@@ -2,6 +2,7 @@ package com.digitaltours.digitaltours_api.service.impl;
 
 import com.digitaltours.digitaltours_api.dto.ImageDTO;
 import com.digitaltours.digitaltours_api.entities.ImageEntity;
+import com.digitaltours.digitaltours_api.entities.ProductEntity;
 import com.digitaltours.digitaltours_api.mappers.ImageMapper;
 import com.digitaltours.digitaltours_api.repository.ImageRepository;
 import com.digitaltours.digitaltours_api.service.ImageService;
@@ -45,7 +46,9 @@ public class ImageServiceImpl implements ImageService {
     public ImageDTO updateImage(Long id, ImageDTO imageDTO) {
         ImageEntity imageEntity = imageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Image not found"));
-        imageEntity.setIdProducto(imageDTO.getIdProducto());
+        ProductEntity product = new ProductEntity();
+        product.setId(imageDTO.getIdProducto());
+        imageEntity.setProduct(product);
         imageEntity.setUrlImagen(imageDTO.getUrlImagen());
         imageEntity = imageRepository.save(imageEntity);
         return ImageMapper.mapImage(imageEntity);  // Usa el método estático
