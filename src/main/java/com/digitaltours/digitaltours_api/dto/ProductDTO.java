@@ -19,5 +19,6 @@ public class ProductDTO {
     private Integer duration;
     private CityDTO  city;
     private List<String> imageUrls;
+    private List<FeatureDTO> features;
     // private String image;
 }
