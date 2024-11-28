@@ -75,6 +75,17 @@ public class ReservationController {
         }
     }
 
+    @Operation(summary = "Obtener todas las reservas de un usuario", description = "Este endpoint permite obtener todas las reservas de un usuario.")
+    @GetMapping("/v1/reservations/user/{id:[\\d]+}")
+    public ApiResponseDTO getReservationsByUser(@PathVariable Long id) {
+        try {
+            ApiResponseDTO response = new ApiResponseDTO(meta, reservationService.getReservationsByUserId(id));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+        }
+    }
+
 }
 
    

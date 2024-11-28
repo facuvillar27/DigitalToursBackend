@@ -12,6 +12,8 @@ public interface ReservationService {
 
     ReservationDTO getReservationById(Long id);
 
+    List<ReservationDTO> getReservationsByUserId(Long userId);
+
     void deleteReservation(Long id);
     
 }

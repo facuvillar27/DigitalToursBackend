@@ -11,5 +11,6 @@ public interface  DatesService {
     List<DatesDTO> getDatesByProductId(Long productId); 
     List<DatesDTO> getFilteredDates(LocalDate startDate, LocalDate endDate);
     List<DatesDTO> getFilteredDatesAlt(LocalDate date);
+    DatesDTO getByDateId(Long id);
 
 }
