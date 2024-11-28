@@ -8,4 +8,5 @@ public class ImageDTO {
     private Long idImagen;
     private Long idProducto;
     private String urlImagen;
+    private boolean principal;
 }
