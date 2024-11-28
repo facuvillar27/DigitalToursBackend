@@ -27,6 +27,9 @@ public class ImageEntity {
     @Column(name = "image_url", nullable = false, length = 200)
     private String urlImagen;
 
+    @Column(name = "image_principal", nullable = false)
+    private boolean principal;
+
     public String getUrlImagen() {
         return urlImagen;
     }

@@ -50,6 +50,7 @@ public class ImageServiceImpl implements ImageService {
         product.setId(imageDTO.getIdProducto());
         imageEntity.setProduct(product);
         imageEntity.setUrlImagen(imageDTO.getUrlImagen());
+        imageEntity.setPrincipal(false);
         imageEntity = imageRepository.save(imageEntity);
         return ImageMapper.mapImage(imageEntity);  // Usa el método estático
     }
