@@ -85,7 +85,6 @@ public class ReservationController {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
         }
     }
-
 }
 
    
