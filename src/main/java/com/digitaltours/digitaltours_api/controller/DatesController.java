@@ -73,4 +73,14 @@ public class DatesController {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), "Error al filtrar las fechas.");
         }
     }
+
+    @Operation(summary = "Obtener información de una fecha por ID", description = "Este endpoint permite obtener toda la información de una fecha a través del id_date.")
+    @GetMapping("/v1/dates/{id_date}/product")
+    public ApiResponseDTO getByDateId(@PathVariable Long id_date) {
+        try {
+            return new ApiResponseDTO(meta, datesService.getByDateId(id_date));
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), "Fecha no encontrada.");
+        }
+    }
 }

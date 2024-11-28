@@ -2,12 +2,14 @@ package com.digitaltours.digitaltours_api.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digitaltours.digitaltours_api.dto.DatesDTO;
+import com.digitaltours.digitaltours_api.entities.DatesEntity;
 import com.digitaltours.digitaltours_api.mappers.DatesMapper;
 import com.digitaltours.digitaltours_api.repository.DatesRepository;
 import com.digitaltours.digitaltours_api.service.DatesService;
@@ -38,6 +40,13 @@ public class DatesServiceImpl implements DatesService{
         return datesRepository.findByDate(date).stream()
                 .map(DatesMapper::mapDates)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public DatesDTO getByDateId(Long id) {
+        Optional<DatesEntity> dateEntity = datesRepository.findById(id);
+        return dateEntity.map(DatesMapper::mapDates)
+                         .orElseThrow(() -> new RuntimeException("Fecha no encontrada"));
     }
     
 }
