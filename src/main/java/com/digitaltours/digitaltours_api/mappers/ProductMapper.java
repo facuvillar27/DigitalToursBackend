@@ -1,16 +1,15 @@
 package com.digitaltours.digitaltours_api.mappers;
 
-import com.digitaltours.digitaltours_api.dto.ProductDTO;
-import com.digitaltours.digitaltours_api.entities.ProductEntity;
-import com.digitaltours.digitaltours_api.entities.ImageEntity;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.Converter;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.digitaltours.digitaltours_api.dto.ProductDTO;
+import com.digitaltours.digitaltours_api.entities.ImageEntity;
+import com.digitaltours.digitaltours_api.entities.ProductEntity;
 
 public class ProductMapper {
 
