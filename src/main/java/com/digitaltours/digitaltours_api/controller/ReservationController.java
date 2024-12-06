@@ -15,10 +15,12 @@ import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
 import com.digitaltours.digitaltours_api.dto.ReservationDTO;
 import com.digitaltours.digitaltours_api.service.ReservationService;
 import com.digitaltours.digitaltours_api.utils.Meta;
+import com.digitaltours.digitaltours_api.utils.ReservationMessages;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
+@SuppressWarnings("rawtypes")
 @RestController
 public class ReservationController {
 
@@ -38,7 +40,7 @@ public class ReservationController {
             ApiResponseDTO response = new ApiResponseDTO(meta, reservationService.createReservation(reservationDTO));
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), ReservationMessages.RESERVATIONS_NOT_CREATED);
         }
     }
 
@@ -49,7 +51,8 @@ public class ReservationController {
             ApiResponseDTO response = new ApiResponseDTO(meta, reservationService.getAllReservations());
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()),
+                    ReservationMessages.RESERVATIONS_NOT_FOUND);
         }
     }
 
@@ -60,7 +63,8 @@ public class ReservationController {
             ApiResponseDTO response = new ApiResponseDTO(meta, reservationService.getReservationById(id));
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()),
+                    ReservationMessages.RESERVATION_NOT_FOUND);
         }
     }
 
@@ -71,7 +75,8 @@ public class ReservationController {
             reservationService.deleteReservation(id);
             return new ApiResponseDTO(meta, "Reservation deleted");
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()),
+                    ReservationMessages.RESERVATIONS_DELETE);
         }
     }
 
@@ -82,9 +87,8 @@ public class ReservationController {
             ApiResponseDTO response = new ApiResponseDTO(meta, reservationService.getReservationsByUserId(id));
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()),
+                    ReservationMessages.RESERVATIONS_NOT_FOUND);
         }
     }
 }
-
-   
