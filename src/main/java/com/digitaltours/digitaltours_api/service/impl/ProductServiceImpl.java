@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.digitaltours.digitaltours_api.dto.ProductDTO;
+import com.digitaltours.digitaltours_api.dto.ProductViewDTO;
 import com.digitaltours.digitaltours_api.entities.ProductEntity;
 import com.digitaltours.digitaltours_api.mappers.ProductMapper;
+import com.digitaltours.digitaltours_api.mappers.ProductViewMapper;
 import com.digitaltours.digitaltours_api.repository.CategoryRepository;
 import com.digitaltours.digitaltours_api.repository.CityRepository;
 import com.digitaltours.digitaltours_api.repository.ProductRepository;
+import com.digitaltours.digitaltours_api.repository.ProductViewRepository;
 import com.digitaltours.digitaltours_api.service.ProductService;
 
 @Service
@@ -21,6 +24,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductViewRepository productViewRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -57,12 +63,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    // @Override
+    // public List<ProductDTO> getAllProducts() {
+
+    //     try {
+    //         return productRepository.findAll().stream()
+    //                 .map(ProductMapper::mapProduct)
+    //                 .toList();
+    //     } catch (Exception e) {
+    //         throw new RuntimeException("Error al recuperar los productos: " + e.getMessage(), e);
+    //     }
+    // }
+
     @Override
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductViewDTO> getAllProducts() {
 
         try {
-            return productRepository.findAll().stream()
-                    .map(ProductMapper::mapProduct)
+            return productViewRepository.findAllTours().stream()
+                    .map(ProductViewMapper::mapProductView)
                     .toList();
         } catch (Exception e) {
             throw new RuntimeException("Error al recuperar los productos: " + e.getMessage(), e);
