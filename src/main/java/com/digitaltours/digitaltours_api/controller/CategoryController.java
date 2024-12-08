@@ -40,7 +40,7 @@ public class CategoryController {
             ApiResponseDTO response = new ApiResponseDTO(meta, categoryService.getAllCategories());
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), CategoryMessages.CATEGORIES_NOT_SHOWN);
         }
     }
 
@@ -62,7 +62,7 @@ public class CategoryController {
             ApiResponseDTO response = new ApiResponseDTO(meta, categoryService.saveCategory(category));
             return response;
         } catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), CategoryMessages.CATEGORY_NOT_SAVED);
         }
     }
 
@@ -73,7 +73,7 @@ public class CategoryController {
             ApiResponseDTO response = new ApiResponseDTO(meta, categoryService.deleteCategory(id));
             return response;
         }catch (Exception e) {
-            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), CategoryMessages.CATEGORY_NOT_FOUND);
         }
     }
 }
