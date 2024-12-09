@@ -45,6 +45,17 @@ public class ProductController {
         }
     }
 
+    @Operation(summary = "Mostrar todos los productos existentes con menos informacion relacionada", description = "Este endpoint permite mostrar todos los productos con menos informacion relacionada.")
+    @GetMapping("/v1/products/alt")
+    public ApiResponseDTO getAllProductsView() {
+        try {
+            ApiResponseDTO response = new ApiResponseDTO(meta, productService.getAllProductsView());
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.NOT_FOUND.value()), e);
+        }
+    }
+
     @Operation(summary = "Mostrar una producto usando su id", description = "Este endpoint permite mostrar una producto usando su id.")
     @GetMapping(value = "/v1/products/{id:\\d{1,19}}")
     public ApiResponseDTO getProduct(@PathVariable Long id) {
