@@ -63,20 +63,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    // @Override
-    // public List<ProductDTO> getAllProducts() {
+    @Override
+    public List<ProductDTO> getAllProducts() {
 
-    //     try {
-    //         return productRepository.findAll().stream()
-    //                 .map(ProductMapper::mapProduct)
-    //                 .toList();
-    //     } catch (Exception e) {
-    //         throw new RuntimeException("Error al recuperar los productos: " + e.getMessage(), e);
-    //     }
-    // }
+        try {
+            return productRepository.findAll().stream()
+                    .map(ProductMapper::mapProduct)
+                    .toList();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al recuperar los productos: " + e.getMessage(), e);
+        }
+    }
 
     @Override
-    public List<ProductViewDTO> getAllProducts() {
+    public List<ProductViewDTO> getAllProductsView() {
 
         try {
             return productViewRepository.findAllTours().stream()

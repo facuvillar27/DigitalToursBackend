@@ -8,8 +8,8 @@ import com.digitaltours.digitaltours_api.dto.ProductViewDTO;
 public interface ProductService {
 
     ProductDTO saveProduct(ProductDTO product);
-    //List<ProductDTO> getAllProducts();
-    List<ProductViewDTO> getAllProducts();
+    List<ProductDTO> getAllProducts();
+    List<ProductViewDTO> getAllProductsView();
     ProductDTO getProduct(Long id);
     Integer queryIdProduct();
     ProductDTO deleteProduct(Long id);
