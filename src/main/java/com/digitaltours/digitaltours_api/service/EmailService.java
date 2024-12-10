@@ -48,7 +48,7 @@ public class EmailService {
                 + "Tour: " + tourName + "\n"
                 + "Fecha: " + date + "\n"
                 + "Hora: " + start_time + "\n"
-                + "Codigo de reserva: " + confirmationCode
+                + "Codigo de reserva: " + confirmationCode + "\n"
                 + "Por consultas comunicarse con DigitalTours2024@gmail.com \n\n", false);
         mailSender.send(message);
     }
