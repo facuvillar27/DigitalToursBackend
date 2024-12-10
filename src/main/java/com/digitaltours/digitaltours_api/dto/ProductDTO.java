@@ -17,8 +17,9 @@ public class ProductDTO {
     private CategoryDTO category;
     private Float price;
     private Integer duration;
+    private String startTime;
+    private String departureTime;
     private CityDTO city;
     private List<String> imageUrls;
     private List<FeatureDTO> features;
-    // private String image;
 }
