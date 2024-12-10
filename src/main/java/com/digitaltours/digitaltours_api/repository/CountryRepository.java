@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.digitaltours.digitaltours_api.entities.CountryEntity;
 
 @Repository
-public interface  CountryRepository extends JpaRepository<CountryEntity, Long>{
-    
+public interface CountryRepository extends JpaRepository<CountryEntity, Long> {
+
 }

@@ -7,8 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountryDTO {
+public class ProductCreateDTO {
 
     private Long id;
     private String name;
+    private String description;
+    private Long categoryId;
+    private Float price;
+    private Integer duration;
+    private Long cityId;
+    private String imageUrl;
 }

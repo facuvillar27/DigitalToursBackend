@@ -15,15 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Entity
 @Table(name = "cities")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CityEntity implements Serializable {
-    
+
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +30,9 @@ public class CityEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_country", nullable = false)
     private CountryEntity country;
-    
+
 }

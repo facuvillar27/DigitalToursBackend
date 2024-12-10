@@ -18,13 +18,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table(name = "country")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CountryEntity implements Serializable{
+public class CountryEntity implements Serializable {
 
     @Id
     @Basic(optional = false)
@@ -33,7 +32,7 @@ public class CountryEntity implements Serializable{
     private Long id;
 
     @Column(name = "name")
-    @JsonProperty("countryName") 
+    @JsonProperty("countryName")
     private String name;
 
     @JsonIgnore

@@ -5,16 +5,20 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.digitaltours.digitaltours_api.dto.ProductCreateDTO;
 import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.dto.ProductViewDTO;
+import com.digitaltours.digitaltours_api.entities.ImageEntity;
 import com.digitaltours.digitaltours_api.entities.ProductEntity;
 import com.digitaltours.digitaltours_api.mappers.ProductMapper;
 import com.digitaltours.digitaltours_api.mappers.ProductViewMapper;
 import com.digitaltours.digitaltours_api.repository.CategoryRepository;
 import com.digitaltours.digitaltours_api.repository.CityRepository;
+import com.digitaltours.digitaltours_api.repository.ImageRepository;
 import com.digitaltours.digitaltours_api.repository.ProductRepository;
 import com.digitaltours.digitaltours_api.repository.ProductViewRepository;
 import com.digitaltours.digitaltours_api.service.ProductService;
@@ -34,20 +38,46 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CityRepository cityRepository;
 
-    @Override
-    public ProductDTO saveProduct(ProductDTO newProduct) {
-        //final Integer idProduct = queryIdProduct();
-       // newProduct.setId(idProduct.longValue());
-        final ProductEntity product = ProductMapper.mapProductDTO(newProduct);
+    @Autowired
+    private ImageRepository imageRepository;
 
-        return ProductMapper.mapProduct(productRepository.save(product));
+    // @Override
+    // public ProductDTO saveProduct(ProductDTO newProduct) {
+
+    // final ProductEntity product = ProductMapper.mapProductDTO(newProduct);
+
+    // return ProductMapper.mapProduct(productRepository.save(product));
+    // }
+
+    @Override
+    public ProductDTO saveProduct(ProductCreateDTO newProduct) {
+
+        ProductEntity product = new ProductEntity();
+        product.setName(newProduct.getName());
+        product.setDescription(newProduct.getDescription());
+        product.setPrice(newProduct.getPrice());
+        product.setDuration(newProduct.getDuration());
+
+        product.setCity(cityRepository.findById(newProduct.getCityId()).orElseThrow());
+        product.setCategory(categoryRepository.findById(newProduct.getCategoryId()).orElseThrow());
+
+        ImageEntity image = new ImageEntity();
+        image.setUrlImagen(newProduct.getImageUrl());
+        image.setPrincipal(true);
+        product.setImages(List.of(image));
+
+        final ProductDTO ProductDTOSaved = ProductMapper.mapProduct(productRepository.save(product));
+
+        image.setProduct(productRepository.findById(ProductDTOSaved.getId()).orElseThrow());
+        imageRepository.save(image);
+
+        return ProductDTOSaved;
     }
 
     @Override
     public Integer queryIdProduct() {
         return productRepository.findMaxIdProduct();
     }
-
 
     @Override
     public ProductDTO getProduct(final Long id) {
@@ -61,7 +91,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDTO;
     }
-
 
     @Override
     public List<ProductDTO> getAllProducts() {
@@ -113,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
         }
         throw new RuntimeException("Producto no encontrado para actualizar");
     }
-    
+
     @Override
     public ProductDTO deleteProduct(final Long product) {
         ProductDTO productEliminado = null;
@@ -127,21 +156,24 @@ public class ProductServiceImpl implements ProductService {
         }
         return productEliminado;
     }
-    
 
-    /* Otra forma de iterar sobre los registros que regresa la BD.
-    @Override
-    public List<ProductDTO> getAllProducts() {
-        final List<ProductDTO> products = new ArrayList<>();
-
-        try {
-            productRepository.findAll().forEach(product -> {products.add(ProductMapper.mapProduct(product));
-        });
-        return products;
-        } catch (Exception e) {
-            throw new RuntimeException("Error al recuperar los productos: " + e.getMessage(), e);
-        }
-    }
-    */
+    /*
+     * Otra forma de iterar sobre los registros que regresa la BD.
+     * 
+     * @Override
+     * public List<ProductDTO> getAllProducts() {
+     * final List<ProductDTO> products = new ArrayList<>();
+     * 
+     * try {
+     * productRepository.findAll().forEach(product ->
+     * {products.add(ProductMapper.mapProduct(product));
+     * });
+     * return products;
+     * } catch (Exception e) {
+     * throw new RuntimeException("Error al recuperar los productos: " +
+     * e.getMessage(), e);
+     * }
+     * }
+     */
 
 }

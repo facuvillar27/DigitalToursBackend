@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
+import com.digitaltours.digitaltours_api.dto.ProductCreateDTO;
 import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.service.ProductService;
 import com.digitaltours.digitaltours_api.utils.Meta;
@@ -68,9 +69,20 @@ public class ProductController {
     }
 
 
+    // @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
+    // @PostMapping(path ="/v1/products")
+    // public ApiResponseDTO saveProduct( @RequestBody @Valid ProductDTO product) {
+    //     try {
+    //         ApiResponseDTO response = new ApiResponseDTO(meta, productService.saveProduct(product));
+    //         return response;
+    //     } catch (Exception e) {
+    //         return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+    //     }
+    // }
+
     @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
     @PostMapping(path ="/v1/products")
-    public ApiResponseDTO saveProduct( @RequestBody @Valid ProductDTO product) {
+    public ApiResponseDTO saveProduct( @RequestBody @Valid ProductCreateDTO product) {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, productService.saveProduct(product));
             return response;
