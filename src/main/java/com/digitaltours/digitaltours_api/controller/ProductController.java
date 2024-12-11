@@ -1,5 +1,6 @@
 package com.digitaltours.digitaltours_api.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.digitaltours.digitaltours_api.dto.ApiResponseDTO;
 import com.digitaltours.digitaltours_api.dto.ProductCreateDTO;
@@ -69,25 +72,27 @@ public class ProductController {
     }
 
 
-    // @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
-    // @PostMapping(path ="/v1/products")
-    // public ApiResponseDTO saveProduct( @RequestBody @Valid ProductDTO product) {
-    //     try {
-    //         ApiResponseDTO response = new ApiResponseDTO(meta, productService.saveProduct(product));
-    //         return response;
-    //     } catch (Exception e) {
-    //         return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
-    //     }
-    // }
-
     @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
     @PostMapping(path ="/v1/products")
-    public ApiResponseDTO saveProduct( @RequestBody @Valid ProductCreateDTO product) {
+    public ApiResponseDTO saveProduct( @RequestBody @Valid ProductDTO product) {
         try {
             ApiResponseDTO response = new ApiResponseDTO(meta, productService.saveProduct(product));
             return response;
         } catch (Exception e) {
             return new ApiResponseDTO(new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
+        }
+    }
+
+    @Operation(summary = "Guardar un nuevo producto", description = "Este endpoint le permite a un administrador guardar un nuevo producto.")
+    @PostMapping(path = "/v1/products/new", consumes = {"multipart/form-data"})
+    public ApiResponseDTO saveProductAlt(@RequestPart("product") ProductCreateDTO product, @RequestPart("image") List<MultipartFile> image) {
+        try {
+
+            ApiResponseDTO response = new ApiResponseDTO(meta, productService.saveProductAlt(product, image));
+            return response;
+        } catch (Exception e) {
+            return new ApiResponseDTO(
+                    new Meta(UUID.randomUUID().toString(), "Error", HttpStatus.UNPROCESSABLE_ENTITY.value()), e);
         }
     }
 

@@ -1,12 +1,14 @@
 package com.digitaltours.digitaltours_api.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.digitaltours.digitaltours_api.dto.ProductCreateDTO;
@@ -14,6 +16,8 @@ import com.digitaltours.digitaltours_api.dto.ProductDTO;
 import com.digitaltours.digitaltours_api.dto.ProductViewDTO;
 import com.digitaltours.digitaltours_api.entities.ImageEntity;
 import com.digitaltours.digitaltours_api.entities.ProductEntity;
+import com.digitaltours.digitaltours_api.exceptions.ResourceNotFoundException;
+import com.digitaltours.digitaltours_api.exceptions.CustomServiceException;
 import com.digitaltours.digitaltours_api.mappers.ProductMapper;
 import com.digitaltours.digitaltours_api.mappers.ProductViewMapper;
 import com.digitaltours.digitaltours_api.repository.CategoryRepository;
@@ -22,6 +26,7 @@ import com.digitaltours.digitaltours_api.repository.ImageRepository;
 import com.digitaltours.digitaltours_api.repository.ProductRepository;
 import com.digitaltours.digitaltours_api.repository.ProductViewRepository;
 import com.digitaltours.digitaltours_api.service.ProductService;
+import com.digitaltours.digitaltours_api.service.S3Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -41,38 +46,118 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ImageRepository imageRepository;
 
-    // @Override
-    // public ProductDTO saveProduct(ProductDTO newProduct) {
-
-    // final ProductEntity product = ProductMapper.mapProductDTO(newProduct);
-
-    // return ProductMapper.mapProduct(productRepository.save(product));
-    // }
+    @Autowired
+    private S3Service s3Service;
 
     @Override
-    public ProductDTO saveProduct(ProductCreateDTO newProduct) {
+    public ProductDTO saveProduct(ProductDTO newProduct) {
+    final ProductEntity product = ProductMapper.mapProductDTO(newProduct);
 
+    return ProductMapper.mapProduct(productRepository.save(product));
+    }
+
+    @Override
+    public ProductDTO saveProductAlt(ProductCreateDTO newProduct, List<MultipartFile> images) {
+
+        try {
+        // Crear entidad del producto
         ProductEntity product = new ProductEntity();
         product.setName(newProduct.getName());
         product.setDescription(newProduct.getDescription());
         product.setPrice(newProduct.getPrice());
         product.setDuration(newProduct.getDuration());
 
-        product.setCity(cityRepository.findById(newProduct.getCityId()).orElseThrow());
-        product.setCategory(categoryRepository.findById(newProduct.getCategoryId()).orElseThrow());
+        // Buscar relaciones obligatorias
+        product.setCity(cityRepository.findById(newProduct.getCityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Ciudad no encontrada")));
+        product.setCategory(categoryRepository.findById(newProduct.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada")));
 
-        ImageEntity image = new ImageEntity();
-        image.setUrlImagen(newProduct.getImageUrl());
-        image.setPrincipal(true);
-        product.setImages(List.of(image));
+        // Guardar el producto
+        ProductEntity savedProduct = productRepository.save(product);
 
-        final ProductDTO ProductDTOSaved = ProductMapper.mapProduct(productRepository.save(product));
+        List<ImageEntity> imageEntities = new ArrayList<>();
 
-        image.setProduct(productRepository.findById(ProductDTOSaved.getId()).orElseThrow());
-        imageRepository.save(image);
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile file = images.get(i);
 
-        return ProductDTOSaved;
+            // Manejar carga de archivos a S3
+            String imageUrl;
+            try {
+                imageUrl = s3Service.uploadFile(file);
+            } catch (Exception e) {
+                throw new FileUploadException("Error al subir archivo: " + file.getOriginalFilename(), e);
+            }
+
+            // Crear y guardar entidad de imagen
+            ImageEntity image = new ImageEntity();
+            image.setUrlImagen(imageUrl);
+            image.setPrincipal(i == 0);  // La primera imagen es principal
+            image.setProduct(savedProduct);
+
+            imageEntities.add(imageRepository.save(image));
+        }
+
+        savedProduct.setImages(imageEntities);
+
+        return ProductMapper.mapProduct(savedProduct);
+
+    } catch (ResourceNotFoundException e) {
+        throw new CustomServiceException("Error en datos relacionados: " + e.getMessage(), e);
+    } catch (FileUploadException e) {
+        throw new CustomServiceException("Error al subir imágenes: " + e.getMessage(), e);
+    } catch (Exception e) {
+        throw new CustomServiceException("Error al guardar el producto", e);
     }
+    }
+
+    // @Override
+    // public ProductDTO saveProductAlt(ProductCreateDTO newProduct, MultipartFile image) {
+
+    //     try {
+    //         // Crear entidad del producto
+    //         ProductEntity product = new ProductEntity();
+    //         product.setName(newProduct.getName());
+    //         product.setDescription(newProduct.getDescription());
+    //         product.setPrice(newProduct.getPrice());
+    //         product.setDuration(newProduct.getDuration());
+
+    //         // Buscar relaciones obligatorias
+    //         product.setCity(cityRepository.findById(newProduct.getCityId())
+    //                 .orElseThrow(() -> new ResourceNotFoundException("Ciudad no encontrada")));
+    //         product.setCategory(categoryRepository.findById(newProduct.getCategoryId())
+    //                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada")));
+
+    //         // Guardar el producto
+    //         ProductEntity savedProduct = productRepository.save(product);
+
+    //         // Manejar carga de archivo a S3
+    //         String imageUrl;
+    //         try {
+    //             imageUrl = s3Service.uploadFile(image);
+    //         } catch (Exception e) {
+    //             throw new FileUploadException("Error al subir archivo: " + image.getOriginalFilename(), e);
+    //         }
+
+    //         // Crear y guardar entidad de imagen
+    //         ImageEntity imageEntity = new ImageEntity();
+    //         imageEntity.setUrlImagen(imageUrl);
+    //         imageEntity.setPrincipal(true); // Solo una imagen, es principal por defecto
+    //         imageEntity.setProduct(savedProduct);
+
+    //         imageRepository.save(imageEntity);
+    //         savedProduct.setImages(Collections.singletonList(imageEntity));
+
+    //         return ProductMapper.mapProduct(savedProduct);
+
+    //     } catch (ResourceNotFoundException e) {
+    //         throw new CustomServiceException("Error en datos relacionados: " + e.getMessage(), e);
+    //     } catch (FileUploadException e) {
+    //         throw new CustomServiceException("Error al subir imagen: " + e.getMessage(), e);
+    //     } catch (Exception e) {
+    //         throw new CustomServiceException("Error al guardar el producto", e);
+    //     }
+    // }
 
     @Override
     public Integer queryIdProduct() {
@@ -156,24 +241,5 @@ public class ProductServiceImpl implements ProductService {
         }
         return productEliminado;
     }
-
-    /*
-     * Otra forma de iterar sobre los registros que regresa la BD.
-     * 
-     * @Override
-     * public List<ProductDTO> getAllProducts() {
-     * final List<ProductDTO> products = new ArrayList<>();
-     * 
-     * try {
-     * productRepository.findAll().forEach(product ->
-     * {products.add(ProductMapper.mapProduct(product));
-     * });
-     * return products;
-     * } catch (Exception e) {
-     * throw new RuntimeException("Error al recuperar los productos: " +
-     * e.getMessage(), e);
-     * }
-     * }
-     */
 
 }

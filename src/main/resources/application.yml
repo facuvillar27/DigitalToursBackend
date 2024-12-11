@@ -47,6 +47,13 @@ spring:
     username: DgAdmin # Nombre de usuario para MySQL
     password: ${DB_PASSWORD} # Contraseña de MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  http:
+    multipart:
+      enabled: true
 
 # Perfil H2
 ---

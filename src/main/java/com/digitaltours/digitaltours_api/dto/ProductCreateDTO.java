@@ -16,5 +16,5 @@ public class ProductCreateDTO {
     private Float price;
     private Integer duration;
     private Long cityId;
-    private String imageUrl;
+    //private String imageUrl;
 }
