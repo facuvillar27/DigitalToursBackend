@@ -66,6 +66,8 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(newProduct.getDescription());
         product.setPrice(newProduct.getPrice());
         product.setDuration(newProduct.getDuration());
+        product.setStartTime(newProduct.getStartTime());
+        product.setDepartureTime(newProduct.getDepartureTime());
 
         // Buscar relaciones obligatorias
         product.setCity(cityRepository.findById(newProduct.getCityId())
