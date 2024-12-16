@@ -1,0 +1,95 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /digitaltours/api  # Ruta inicial de la API
+  tomcat:
+    uri-encoding: UTF-8  # Configuración de Tomcat para UTF-8
+
+jwt:
+  secret: 37f923f638cda3d57444937f89b1d4c92a66aafaa6a51efda9ddae91fad4ba6ba2e79e3872c3112a6052e8965b047880ce19cf2379f6153c4e240e1c6a688ee49a1cda61fd8012ed32f6e060b409a462500e7c27556d81baea25a5d99b160d67180c6ef27373cbe096427efe9ece7ebf69bb219a347e7f388d126219482581e79666186720ef387f4be3082bc912ac420a96a197fd77d7b3b89928f2b90b03a571826b6859550fb437694516eb650a8bac49a3db00ad31f0fae87a2c48dd5bca00655302052b6a8bd7ccc73c8e06a8136edc319cb51b8f6bf852a04c09783e6603dbe38d1ecea182ba27df2f48f122fb3d338bc2998d260e0b548f96dbc30c95
+
+aws:
+  bucketName: digital-tours-img
+  accessKeyId: AKIAW3MECQU2UUZBK7BT
+  secretKey: ${AWS_SECRET_KEY} # Clave secreta de AWS
+  region: us-east-1
+
+spring:
+  profiles:
+    active: mysql  # Perfil activo por defecto para MySQL
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: America/Mazatlan # Zona horaria configurada para América/Mazatlán
+    locale: es_MX
+  datasource:
+    hikari:
+      minimumIdle: 4
+      maximum-pool-size: 10  # Tamaño máximo del pool de conexiones de HikariCP
+      idleTimeout: 15000
+      pool-name:
+      maxLifetime: 1800000
+      connectionTimeout: 30000
+  sql:
+    init:
+      encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: none  # Actualiza la base de datos en cada inicio para MySQL (ajusta según sea necesario)
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+# Perfil MySQL
+---
+spring:
+  datasource:
+    url: jdbc:mysql://digital-tours-db.c9m6c628y4fj.us-east-1.rds.amazonaws.com:3306/digital_toursV2?useSSL=false&serverTimezone=UTC
+    username: DgAdmin # Nombre de usuario para MySQL
+    password: ${DB_PASSWORD} # Contraseña de MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  http:
+    multipart:
+      enabled: true
+
+# Perfil H2
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  h2:
+    console:
+      enabled: true  # Habilita la consola de H2
+      path: /h2-console  # Ruta de la consola de H2
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test  # Configuración de BD de H2
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format-sql: true
+        ddl-auto: create  # Reemplaza según tus necesidades para pruebas
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: DigitalTours2024@gmail.com
+    password: bgcl gowy ivhs rjqn # Cambiar la contraseña por una no hardcodeada esta contraseña es de contraseña de aplicaciones de gmail
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
